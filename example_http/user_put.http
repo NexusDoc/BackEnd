@@ -1,0 +1,12 @@
+# Defina uma variável com o token (REST Client)
+@baseUrl = http://127.0.0.1:8000
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiZXhwIjoxNzU2NTg3MjYxLCJ0eXBlIjoiYWNjZXNzIiwiZW1haWwiOiJtYWlzdW1AdGVzdGUuY29tIn0.xJUOa5QYm6TreUVimvQ-Eu27FbkGrlGuefHUFpzl2L8
+
+### Exemplo de uso (PUT /users/me)
+PUT {{baseUrl}}/users/me
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "cell_phone": "12345678901"
+}

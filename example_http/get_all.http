@@ -1,0 +1,6 @@
+@baseUrl = http://127.0.0.1:8000
+@token = <COLE_AQUI_O_ACCESS_TOKEN>
+
+### Listar usuários
+GET {{baseUrl}}/users
+Authorization: Bearer {{token}}

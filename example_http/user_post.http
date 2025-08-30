@@ -1,0 +1,21 @@
+@BASE=http://127.0.0.1:8000
+
+### Criar usuário
+POST {{BASE}}/users### Login
+# @name login
+POST http://127.0.0.1:8000/users/login
+Content-Type: application/json
+
+{
+  "email": "maisum@teste.com",
+  "password": "Teste123"
+}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Gabriel",
+  "email": "maisum@teste.com",
+  "cell_phone": "43215678901",
+  "password": "Teste123"
+}
