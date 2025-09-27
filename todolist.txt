@@ -1,0 +1,1 @@
+Só para reforçarmos, precisamos de ter um reset password apenas no login e você precisa substituir o campo CPF pelo telefone.

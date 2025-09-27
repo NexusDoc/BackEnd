@@ -1,21 +1,22 @@
 # Web framework e servidor ASGI
-fastapi
-uvicorn[standard]
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
 
 # ORM e driver assíncrono para MySQL
-SQLAlchemy>=2.0
-asyncmy
+SQLAlchemy>=2.0.35
+asyncmy>=0.2.10
 
-# Autenticação baseada em token (JWT)
-python-jose[cryptography]
+# Autenticação baseada em token (JWT) - usando PyJWT (mais seguro)
+PyJWT[crypto]>=2.8.0
 
 # Hash de senha seguro (recomendado): Argon2id via passlib
-passlib
-argon2-cffi
+passlib[argon2]>=1.7.4
+argon2-cffi>=25.1.0
 
 # Configuração por variáveis de ambiente (.env)
-pydantic-settings
-python-dotenv
+pydantic[email]>=2.6.0
+pydantic-settings>=2.6.0
+python-dotenv>=1.0.0
 
 # Migrações de banco (recomendado)
-alembic
+alembic>=1.13.0

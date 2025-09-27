@@ -3,7 +3,8 @@ from __future__ import annotations
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict
 
-from jose import jwt, JWTError
+import jwt
+from jwt import PyJWTError as JWTError
 from fastapi import HTTPException, status
 
 from configs.infra.settings.setting import settings

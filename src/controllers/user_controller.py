@@ -5,13 +5,14 @@ from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from jose import JWTError, jwt
+from jwt import PyJWTError as JWTError
+import jwt
 from pydantic import BaseModel, EmailStr, Field
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.schemas.schema import UserCreate, UserUpdate, UserRead
-from src.services import created_user, search_user, search_to_email, delet_user, updated_user
+from src.services import created_user, search_user, search_to_telefone, delet_user, updated_user
 from src.configs.infra.persistence.db import get_session
 from src.configs.infra.settings.setting import settings  # ✅ importa a instância correta
 from src.models.user_model import User
@@ -76,19 +77,19 @@ async def get_current_user(
 
 # ---------------- DTOs ----------------
 class Credentials(BaseModel):
-    email: EmailStr
+    telefone: str = Field(..., min_length=10, max_length=15)
     password: str = Field(..., min_length=8, max_length=128)
 
 # ---------------- LOGIN ----------------
 @auth_router.post("/login", response_model=TokenResponse, status_code=status.HTTP_200_OK)
 async def login(creds: Credentials, session: AsyncSession = Depends(get_session)) -> TokenResponse:
     try:
-        user = await search_to_email.execute(session, email=str(creds.email), password=creds.password)
+        user = await search_to_telefone.execute(session, telefone=str(creds.telefone), password=creds.password)
     except ValueError:
         raise HTTPException(status_code=404, detail="O usuário não foi encontrado.")
     except PermissionError:
         raise HTTPException(status_code=401, detail="Credenciais inválidas.")
-    return _create_access_token(subject=str(user.id), additional_claims={"email": user.email})
+    return _create_access_token(subject=str(user.id), additional_claims={"telefone": user.cell_phone})
 
 # ---------------- CRIAR ----------------
 @router.post(
