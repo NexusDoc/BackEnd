@@ -53,6 +53,14 @@ class UserRepository:
         )
         return res.scalar_one_or_none()
 
+    async def get_by_telefone(self, telefone: str) -> Optional[User]:
+        # Remove caracteres não numéricos para busca
+        clean_telefone = ''.join(ch for ch in telefone if ch.isdigit())
+        res = await self.session.execute(
+            select(User).where(User.cell_phone == clean_telefone)
+        )
+        return res.scalar_one_or_none()
+
     async def list(self, *, offset: int = 0, limit: int = 50) -> Sequence[User]:
         res = await self.session.execute(
             select(User).order_by(User.id.asc()).offset(offset).limit(limit)

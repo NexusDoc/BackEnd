@@ -26,6 +26,12 @@ try:
 except Exception:
     pass
 
+# === Settings ===
+try:
+    from configs.infra.settings.setting import settings
+except ImportError:
+    settings = None
+
 config = context.config
 
 # === Logging tolerante ===
@@ -45,6 +51,8 @@ target_metadata = Base.metadata
 
 def get_db_url() -> str:
     url = os.getenv("DATABASE_URL")
+    if not url and settings:
+        url = settings.database_url
     if not url:
         section = config.get_section(config.config_ini_section) or {}
         url = section.get("sqlalchemy.url")

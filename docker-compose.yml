@@ -9,7 +9,7 @@ services:
       MYSQL_USER: ${MYSQL_USER:-createduser}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-createdpass}
     ports:
-      - "3306:3306"
+      - "3307:3306"
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$${MYSQL_ROOT_PASSWORD} --silent"]
       interval: 5s

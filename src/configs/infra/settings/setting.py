@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     DATABASE_URL: Optional[str] = None
 
     DB_HOST: str = "127.0.0.1"
-    DB_PORT: int = 3306
+    DB_PORT: int = 3307
     DB_NAME: str = "createdcount"      # <- alinhado ao .env
     DB_USER: str = "createduser"
     DB_PASSWORD: str = "createdpass"
