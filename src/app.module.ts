@@ -1,21 +1,26 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import databaseConfig from './config/db';
-import { DatabaseModule } from './database/database.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
+import { User } from './users/entities/users.entity';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [databaseConfig],
-      envFilePath: process.env.NODE_ENV === 'production'
-        ? '.env.production'
-        : '.env.development',
+      envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
-
-    DatabaseModule,
-    UsersModule,   // <-- ESTE CARA PRECISA ESTAR AQUI
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: process.env.DB_HOST,
+      port: +process.env.DB_PORT!,
+      username: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.DB_NAME,
+      entities: [User],
+      synchronize: true,
+    }),
+    UsersModule, // <- agora as rotas de users ficam ativas
   ],
 })
 export class AppModule {}
