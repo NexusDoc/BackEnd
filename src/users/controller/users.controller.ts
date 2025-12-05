@@ -2,8 +2,10 @@ import { Controller, Post, Body, HttpCode } from '@nestjs/common';
 import { UsersService } from '../services/users.services';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { LoginUserDto } from '../dto/login-user.dto';
+import { ResetRequestDto } from '../dto/reset-request.dto';
+import { ResetConfirmDto } from '../dto/reset-confirm.dto';
 
-@Controller('users') // Prefixo das rotas: /users
+@Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -22,8 +24,22 @@ export class UsersController {
   }
 
   @Post('login')
-  @HttpCode(200) 
+  @HttpCode(200)
   async login(@Body() loginUserDto: LoginUserDto) {
     return this.usersService.login(loginUserDto);
+  }
+
+  @Post('reset-password/request')
+  async requestReset(@Body() dto: ResetRequestDto) {
+    return this.usersService.resetRequest(dto.email);
+  }
+
+  @Post('reset-password/confirm')
+  async confirmReset(@Body() dto: ResetConfirmDto) {
+    return this.usersService.resetConfirm(
+      dto.email,
+      dto.code,
+      dto.newPassword,
+    );
   }
 }
