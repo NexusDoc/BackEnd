@@ -3,6 +3,8 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { User } from './users/entities/users.entity';
+import { ScheduleModule } from '@nestjs/schedule';
+
 
 @Module({
   imports: [
@@ -20,7 +22,8 @@ import { User } from './users/entities/users.entity';
       entities: [User],
       synchronize: true,
     }),
-    UsersModule, // <- agora as rotas de users ficam ativas
+    UsersModule,
+    ScheduleModule.forRoot(), 
   ],
 })
 export class AppModule {}

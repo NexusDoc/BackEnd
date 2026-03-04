@@ -1,12 +1,8 @@
-import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
+import { IsNotEmpty, MinLength } from 'class-validator';
 
 export class ResetConfirmDto {
-  @IsEmail()
   @IsNotEmpty()
-  email: string;
-
-  @IsNotEmpty()
-  code: string;
+  token: string;
 
   @IsNotEmpty()
   @MinLength(6)

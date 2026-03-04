@@ -18,7 +18,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const port = configService.get<number>('APP_PORT') || 5000;
 
-  await app.listen(port, '127.0.0.1');
+  await app.listen(port, '0.0.0.0');
 
   console.log(`Servidor rodando na porta ${port}`);
   console.log(`Ambiente atual: ${configService.get('NODE_ENV') || 'development'}`);

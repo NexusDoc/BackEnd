@@ -1,7 +1,9 @@
-import { Controller, Post, Body, HttpCode } from '@nestjs/common';
+import { Controller, Post, Body, Patch, HttpCode } from '@nestjs/common';
 import { UsersService } from '../services/users.services';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { LoginUserDto } from '../dto/login-user.dto';
+import { UpdateEmailDto } from '../dto/update-mail.dto';
+import { UpdatePasswordDto } from '../dto/update-password.dto';
 import { ResetRequestDto } from '../dto/reset-request.dto';
 import { ResetConfirmDto } from '../dto/reset-confirm.dto';
 
@@ -10,36 +12,33 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post('register')
-  async register(@Body() createUserDto: CreateUserDto) {
-    const user = await this.usersService.register(createUserDto);
-    return {
-      mensagem: 'Cadastro realizado com sucesso!',
-      user: {
-        name: user.name,
-        email: user.email,
-        phone: user.phone,
-        role: user.role,
-      },
-    };
+  async register(@Body() data: CreateUserDto) {
+    return this.usersService.register(data);
   }
 
   @Post('login')
-  @HttpCode(200)
-  async login(@Body() loginUserDto: LoginUserDto) {
-    return this.usersService.login(loginUserDto);
+  @HttpCode(200) 
+  async login(@Body() data: LoginUserDto) {
+    return this.usersService.login(data);
   }
 
-  @Post('reset-password/request')
-  async requestReset(@Body() dto: ResetRequestDto) {
+  @Post('reset-request')
+  async resetRequest(@Body() dto: ResetRequestDto) {
     return this.usersService.resetRequest(dto.email);
   }
 
-  @Post('reset-password/confirm')
-  async confirmReset(@Body() dto: ResetConfirmDto) {
-    return this.usersService.resetConfirm(
-      dto.email,
-      dto.code,
-      dto.newPassword,
-    );
+  @Post('reset-confirm')
+async resetConfirm(@Body() dto: ResetConfirmDto) {
+  return this.usersService.resetWithToken(dto.token, dto.newPassword);
+}
+  
+  @Patch('update-email')
+  async updateEmail(@Body() dto: UpdateEmailDto) {
+    return this.usersService.updateEmail(dto.userId, dto.newEmail);
+  }
+
+  @Patch('update-password')
+  async updatePassword(@Body() dto: UpdatePasswordDto) {
+    return this.usersService.updatePassword(dto.userId, dto.currentPassword, dto.newPassword);
   }
 }

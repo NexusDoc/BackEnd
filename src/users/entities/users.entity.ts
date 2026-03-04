@@ -1,6 +1,6 @@
 import { 
   Entity,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn
@@ -9,13 +9,16 @@ import {
 @Entity("users")
 export class User {
 
-  @PrimaryColumn()
-  email: string;
+  @PrimaryGeneratedColumn('uuid')
+  id: string; // <-- novo ID único, chave primária
+
+  @Column({ unique: true })
+  email: string; // agora é apenas único, não a PK
 
   @Column()
   name: string;
 
-  @Column() // <- TELEFONE OBRIGATÓRIO AGORA
+  @Column()
   phone: string;
 
   @Column()

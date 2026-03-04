@@ -1,4 +1,11 @@
-import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  MinLength,
+  IsOptional,
+  IsIn,
+} from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
@@ -17,4 +24,10 @@ export class CreateUserDto {
   @MinLength(6, { message: 'A senha deve ter pelo menos 6 caracteres' })
   @IsNotEmpty({ message: 'A senha é obrigatória' })
   password: string;
+
+
+  @IsOptional()
+  @IsString()
+  @IsIn(['user', 'admin'])
+  role?: 'user' | 'admin';
 }
