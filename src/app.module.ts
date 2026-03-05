@@ -4,7 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { User } from './users/entities/users.entity';
 import { ScheduleModule } from '@nestjs/schedule';
-
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { ScheduleModule } from '@nestjs/schedule';
       isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
+
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DB_HOST,
@@ -22,8 +24,22 @@ import { ScheduleModule } from '@nestjs/schedule';
       entities: [User],
       synchronize: true,
     }),
+
+    ThrottlerModule.forRoot([
+      {
+      ttl: 60000,
+      limit: 100,
+    },
+  ]),
+
     UsersModule,
-    ScheduleModule.forRoot(), 
+    ScheduleModule.forRoot(),
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
   ],
 })
 export class AppModule {}

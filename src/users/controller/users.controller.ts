@@ -1,3 +1,4 @@
+import { Throttle } from '@nestjs/throttler';
 import { Controller, Post, Body, Patch, HttpCode } from '@nestjs/common';
 import { UsersService } from '../services/users.services';
 import { CreateUserDto } from '../dto/create-user.dto';
@@ -22,6 +23,7 @@ export class UsersController {
     return this.usersService.login(data);
   }
 
+  @Throttle({ default: { limit: 3, ttl: 60000 } })
   @Post('reset-request')
   async resetRequest(@Body() dto: ResetRequestDto) {
     return this.usersService.resetRequest(dto.email);

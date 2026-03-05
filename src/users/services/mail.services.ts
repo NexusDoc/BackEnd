@@ -64,7 +64,7 @@ export class MailService {
             <hr style="margin: 30px 0; border: none; border-top: 1px solid #eee;" />
   
             <p style="font-size: 12px; color: #888; text-align: center;">
-              © 2026 NexusDoc. Todos os direitos reservados.
+              © 2026 NexusDoc: Todos os direitos reservados.
             </p>
   
           </div>
