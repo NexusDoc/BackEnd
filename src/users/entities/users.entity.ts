@@ -1,24 +1,26 @@
 import { 
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn
-} from 'typeorm';
+  Entity, 
+  PrimaryGeneratedColumn, 
+  Column, 
+  CreateDateColumn, 
+  UpdateDateColumn,
+  ManyToMany,
+  JoinTable 
+} from "typeorm";
+import { DocumentSearch } from "../../legal/entities/DocumentSearch.entity";
 
 @Entity("users")
 export class User {
-
-  @PrimaryGeneratedColumn('uuid')
-  id: string; // <-- novo ID único, chave primária
-
-  @Column({ unique: true })
-  email: string; // agora é apenas único, não a PK
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
   @Column()
   name: string;
 
-  @Column()
+  @Column({ unique: true })
+  email: string;
+
+  @Column({ nullable: true })
   phone: string;
 
   @Column()
@@ -33,9 +35,17 @@ export class User {
   @Column({ type: 'timestamp', nullable: true })
   resetCodeExpires: Date | null;
 
+  @ManyToMany(() => DocumentSearch)
+  @JoinTable({
+    name: 'users_monitored_documents',
+    joinColumn: { name: 'user_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'document_id', referencedColumnName: 'id' }
+  })
+  monitoredDocuments: DocumentSearch[];
+
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
-}
+} 
